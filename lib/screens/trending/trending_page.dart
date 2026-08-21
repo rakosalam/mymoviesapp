@@ -7,6 +7,8 @@ import '../../theme/app_spacing.dart';
 import 'movie_card.dart';
 import 'movie_error_view.dart';
 import 'movie_grid_skeleton.dart';
+import 'movie_list_tile.dart';
+import 'movie_view_mode.dart';
 import 'trending_filter.dart';
 import 'trending_header.dart';
 
@@ -19,6 +21,7 @@ class TrendingPage extends StatefulWidget {
 
 class _TrendingPageState extends State<TrendingPage> {
   TrendingTimeWindow _timeWindow = TrendingTimeWindow.day;
+  MovieViewMode _viewMode = MovieViewMode.list;
   final Set<int> _bookmarkedIds = {};
 
   @override
@@ -50,41 +53,71 @@ class _TrendingPageState extends State<TrendingPage> {
       children: [
         const TrendingHeader(),
         const SizedBox(height: AppSpacing.sm),
-        TrendingFilter(
-          selected: _timeWindow,
-          onChanged: (value) {
-            setState(() => _timeWindow = value);
-            _loadMovies();
-          },
+        Row(
+          children: [
+            Expanded(
+              child: TrendingFilter(
+                selected: _timeWindow,
+                onChanged: (value) {
+                  setState(() => _timeWindow = value);
+                  _loadMovies();
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              child: IconButton(
+                onPressed: () => setState(() => _viewMode = _viewMode.next),
+                icon: Icon(_viewMode.toggleIcon),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: AppSpacing.md),
         Expanded(
           child: switch (movieProvider.moviesStatus) {
             MovieProviderStatus.loading => const MovieGridSkeleton(),
             MovieProviderStatus.error => MovieErrorView(
-                message: movieProvider.errorMessage!,
-                onRetry: _loadMovies,
-              ),
-            MovieProviderStatus.success => GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                ).copyWith(bottom: AppSpacing.md),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: AppSpacing.md,
-                  crossAxisSpacing: AppSpacing.md,
-                  childAspectRatio: 0.56,
-                ),
-                itemCount: movieProvider.movies.length,
-                itemBuilder: (context, index) {
-                  final movie = movieProvider.movies[index];
-                  return MovieCard(
-                    movie: movie,
-                    isBookmarked: _bookmarkedIds.contains(movie.id),
-                    onBookmarkTap: () => _toggleBookmark(movie.id),
-                  );
-                },
-              ),
+              message: movieProvider.errorMessage!,
+              onRetry: _loadMovies,
+            ),
+            MovieProviderStatus.success =>
+              _viewMode == MovieViewMode.grid
+                  ? GridView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                      ).copyWith(bottom: AppSpacing.md),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: AppSpacing.md,
+                            crossAxisSpacing: AppSpacing.md,
+                            childAspectRatio: 0.56,
+                          ),
+                      itemCount: movieProvider.movies.length,
+                      itemBuilder: (context, index) {
+                        final movie = movieProvider.movies[index];
+                        return MovieCard(
+                          movie: movie,
+                          isBookmarked: _bookmarkedIds.contains(movie.id),
+                          onBookmarkTap: () => _toggleBookmark(movie.id),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                      ).copyWith(bottom: AppSpacing.md),
+                      itemCount: movieProvider.movies.length,
+                      itemBuilder: (context, index) {
+                        final movie = movieProvider.movies[index];
+                        return MovieListTile(
+                          movie: movie,
+                          isBookmarked: _bookmarkedIds.contains(movie.id),
+                          onBookmarkTap: () => _toggleBookmark(movie.id),
+                        );
+                      },
+                    ),
           },
         ),
       ],
