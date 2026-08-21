@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:movieapp/provider/movie_provider.dart';
-import 'package:movieapp/services/movie_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/movie_provider.dart';
+import '../../router/app_router.dart';
+import '../../services/movie_service.dart';
 import '../../theme/app_spacing.dart';
-import '../movie_detail/movie_detail_page.dart';
+import '../../widgets/movie_list_tile.dart';
 import 'movie_card.dart';
 import 'movie_error_view.dart';
 import 'movie_grid_skeleton.dart';
-import 'movie_list_tile.dart';
 import 'movie_view_mode.dart';
 import 'trending_filter.dart';
 import 'trending_header.dart';
@@ -102,13 +103,8 @@ class _TrendingPageState extends State<TrendingPage> {
                           movie: movie,
                           isBookmarked: _bookmarkedIds.contains(movie.id),
                           onBookmarkTap: () => _toggleBookmark(movie.id),
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => MovieDetailPage(
-                                movieId: movie.id,
-                              ), // Replace with actual movie ID
-                            ),
-                          ),
+                          onTap: () =>
+                              context.push(AppRoutes.movieDetail(movie.id)),
                         );
                       },
                     )
@@ -123,13 +119,8 @@ class _TrendingPageState extends State<TrendingPage> {
                           movie: movie,
                           isBookmarked: _bookmarkedIds.contains(movie.id),
                           onBookmarkTap: () => _toggleBookmark(movie.id),
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => MovieDetailPage(
-                                movieId: movie.id,
-                              ), // Replace with actual movie ID
-                            ),
-                          ),
+                          onTap: () =>
+                              context.push(AppRoutes.movieDetail(movie.id)),
                         );
                       },
                     ),

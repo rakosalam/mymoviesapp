@@ -5,10 +5,9 @@ import 'package:provider/provider.dart';
 
 import 'provider/movie_provider.dart';
 import 'provider/theme_provider.dart';
-import 'screens/trending/trending_page.dart';
+import 'router/app_router.dart';
 import 'services/movie_service.dart';
 import 'theme/app_theme.dart';
-import 'widgets/app_bottom_nav_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,28 +36,16 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {
-          return MaterialApp(
+          return MaterialApp.router(
             title: 'CineTrack',
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: themeProvider.themeMode,
             debugShowCheckedModeBanner: false,
-            home: const HomeShell(),
+            routerConfig: appRouter,
           );
         },
       ),
-    );
-  }
-}
-
-class HomeShell extends StatelessWidget {
-  const HomeShell({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: TrendingPage(),
-      bottomNavigationBar: AppBottomNavBar(),
     );
   }
 }

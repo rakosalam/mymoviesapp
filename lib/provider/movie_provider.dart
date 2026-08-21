@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/movie.dart';
 import '../models/movie_detail.dart';
+import '../models/movie_list_response.dart';
 
 enum MovieProviderStatus { loading, error, success }
 
@@ -40,12 +41,23 @@ class MovieProvider extends ChangeNotifier {
 
   List<Movie> _searchResults = [];
   bool _isSearching = false;
+  bool _isLoadingMoreSearchResults = false;
   String? _searchErrorMessage;
+  int _searchPage = 1;
+  int _searchTotalPages = 1;
   Timer? _debounce;
 
   List<Movie> get searchResults => _searchResults;
   bool get isSearching => _isSearching;
+  bool get isLoadingMoreSearchResults => _isLoadingMoreSearchResults;
   String? get searchErrorMessage => _searchErrorMessage;
+  bool get hasMoreSearchResults => _searchPage < _searchTotalPages;
+
+  MovieProviderStatus get searchStatus {
+    if (_isSearching) return MovieProviderStatus.loading;
+    if (_searchErrorMessage != null) return MovieProviderStatus.error;
+    return MovieProviderStatus.success;
+  }
 
   Future<void> loadMovies(Future<List<Movie>> Function() fetchMovies) async {
     _isLoading = true;
@@ -75,7 +87,8 @@ class MovieProvider extends ChangeNotifier {
   }
 
   Future<void> loadMovieDetail(
-      Future<MovieDetail> Function() fetchMovieDetail) async {
+    Future<MovieDetail> Function() fetchMovieDetail,
+  ) async {
     _isDetailLoading = true;
     _detailErrorMessage = null;
     notifyListeners();
@@ -92,7 +105,7 @@ class MovieProvider extends ChangeNotifier {
 
   void searchMovies(
     String query,
-    Future<List<Movie>> Function(String query) search,
+    Future<MovieListResponse> Function(String query, int page) search,
   ) {
     _debounce?.cancel();
 
@@ -100,6 +113,8 @@ class MovieProvider extends ChangeNotifier {
       _searchResults = [];
       _isSearching = false;
       _searchErrorMessage = null;
+      _searchPage = 1;
+      _searchTotalPages = 1;
       notifyListeners();
       return;
     }
@@ -110,7 +125,10 @@ class MovieProvider extends ChangeNotifier {
       notifyListeners();
 
       try {
-        _searchResults = await search(query);
+        final response = await search(query, 1);
+        _searchResults = response.results;
+        _searchPage = response.page;
+        _searchTotalPages = response.totalPages;
       } catch (e) {
         _searchErrorMessage = e.toString();
       } finally {
@@ -118,6 +136,31 @@ class MovieProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  /// Fetches the next page of the current search and appends it to
+  /// [searchResults], for infinite scroll. No-op if a page is already
+  /// loading or there are no more pages ([hasMoreSearchResults] is false).
+  Future<void> loadMoreSearchResults(
+    String query,
+    Future<MovieListResponse> Function(String query, int page) search,
+  ) async {
+    if (_isLoadingMoreSearchResults || !hasMoreSearchResults) return;
+
+    _isLoadingMoreSearchResults = true;
+    notifyListeners();
+
+    try {
+      final response = await search(query, _searchPage + 1);
+      _searchResults = [..._searchResults, ...response.results];
+      _searchPage = response.page;
+      _searchTotalPages = response.totalPages;
+    } catch (e) {
+      _searchErrorMessage = e.toString();
+    } finally {
+      _isLoadingMoreSearchResults = false;
+      notifyListeners();
+    }
   }
 
   @override

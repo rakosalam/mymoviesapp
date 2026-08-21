@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../consts/api_constants.dart';
-import '../../models/movie.dart';
-import '../../theme/app_radius.dart';
-import '../../theme/app_spacing.dart';
-import '../../theme/app_typography.dart';
+import '../consts/api_constants.dart';
+import '../models/movie.dart';
+import '../theme/app_radius.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 
 /// Horizontal row for a single movie, used by the list-view layout: a small
 /// poster thumbnail on the left, title/year/rating in the middle, bookmark

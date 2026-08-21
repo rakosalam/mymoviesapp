@@ -12,7 +12,7 @@ class ApiConstants {
   static String trendingMovies(String timeWindow) =>
       '/trending/movie/$timeWindow';
 
-  static const String searchMovie = '/search/movie';
+  //static const String searchMovie = '/search/movie';
 
   // static String movieDetail(int movieId) => '/movie/$movieId';
 
@@ -21,6 +21,9 @@ class ApiConstants {
   // static String movieCredits(int movieId) => '/movie/$movieId/credits';
 
   // static String movieSimilar(int movieId) => '/movie/$movieId/similar';
+
+  static String searchMovie(String query, {int page = 1}) =>
+      '/search/movie?query=${Uri.encodeQueryComponent(query)}&page=$page&include_adult=false';
 
   static String movieDetailWithExtras(int movieId) =>
       '/movie/$movieId?append_to_response=videos,credits,similar';

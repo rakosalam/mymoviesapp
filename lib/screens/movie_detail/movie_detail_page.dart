@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -91,7 +92,7 @@ class _MovieDetailContent extends StatelessWidget {
         children: [
           MovieDetailHero(
             movie: movie,
-            onBackTap: () => Navigator.of(context).maybePop(),
+            onBackTap: () => context.pop(),
             onShareTap: () {},
           ),
           const SizedBox(height: AppSpacing.lg),
