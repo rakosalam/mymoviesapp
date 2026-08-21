@@ -16,6 +16,14 @@ void main() async {
   runApp(const MyApp());
 }
 
+Dio _createDio() {
+  return Dio(
+    BaseOptions(
+      headers: {'Authorization': 'Bearer ${dotenv.env['TMDB_ACCESS_TOKEN']}'},
+    ),
+  );
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,7 +33,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => MovieProvider()),
-        Provider<MovieService>(create: (_) => MovieService(Dio())),
+        Provider<MovieService>(create: (_) => MovieService(_createDio())),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

@@ -87,11 +87,17 @@ class MovieListTile extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.star, size: 14, color: Color(0xFFF5A623)),
+                      const Icon(
+                        Icons.star,
+                        size: 14,
+                        color: Color(0xFFF5A623),
+                      ),
                       const SizedBox(width: 2),
                       Text(
                         movie.voteAverage.toStringAsFixed(1),
-                        style: AppTypography.labelMd(colorScheme.onSurfaceVariant),
+                        style: AppTypography.labelMd(
+                          colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),

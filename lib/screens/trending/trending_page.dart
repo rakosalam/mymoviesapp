@@ -4,6 +4,7 @@ import 'package:movieapp/services/movie_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme/app_spacing.dart';
+import '../movie_detail/movie_detail_page.dart';
 import 'movie_card.dart';
 import 'movie_error_view.dart';
 import 'movie_grid_skeleton.dart';
@@ -101,6 +102,13 @@ class _TrendingPageState extends State<TrendingPage> {
                           movie: movie,
                           isBookmarked: _bookmarkedIds.contains(movie.id),
                           onBookmarkTap: () => _toggleBookmark(movie.id),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => MovieDetailPage(
+                                movieId: movie.id,
+                              ), // Replace with actual movie ID
+                            ),
+                          ),
                         );
                       },
                     )
@@ -115,6 +123,13 @@ class _TrendingPageState extends State<TrendingPage> {
                           movie: movie,
                           isBookmarked: _bookmarkedIds.contains(movie.id),
                           onBookmarkTap: () => _toggleBookmark(movie.id),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => MovieDetailPage(
+                                movieId: movie.id,
+                              ), // Replace with actual movie ID
+                            ),
+                          ),
                         );
                       },
                     ),

@@ -1,5 +1,8 @@
+import 'cast_member.dart';
 import 'genre.dart';
+import 'movie.dart';
 import 'production_company.dart';
+import 'video.dart';
 
 class MovieDetail {
   final int id;
@@ -18,6 +21,12 @@ class MovieDetail {
   final List<Genre> genres;
   final List<ProductionCompany> productionCompanies;
 
+  /// Only populated when the detail request used
+  /// `append_to_response=videos,credits,similar` — empty otherwise.
+  final List<Video> videos;
+  final List<CastMember> cast;
+  final List<Movie> similar;
+
   const MovieDetail({
     required this.id,
     required this.title,
@@ -34,7 +43,22 @@ class MovieDetail {
     required this.status,
     this.genres = const [],
     this.productionCompanies = const [],
+    this.videos = const [],
+    this.cast = const [],
+    this.similar = const [],
   });
+
+  /// The first official YouTube trailer, if one was fetched via
+  /// `append_to_response=videos`.
+  Video? get trailer {
+    for (final video in videos) {
+      if (video.isYoutubeTrailer && video.official) return video;
+    }
+    for (final video in videos) {
+      if (video.isYoutubeTrailer) return video;
+    }
+    return null;
+  }
 
   factory MovieDetail.fromJson(Map<String, dynamic> json) {
     return MovieDetail(
@@ -59,6 +83,21 @@ class MovieDetail {
               ?.map((e) => ProductionCompany.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      videos: ((json['videos'] as Map<String, dynamic>?)?['results']
+                  as List<dynamic>?)
+              ?.map((e) => Video.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      cast: ((json['credits'] as Map<String, dynamic>?)?['cast']
+                  as List<dynamic>?)
+              ?.map((e) => CastMember.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      similar: ((json['similar'] as Map<String, dynamic>?)?['results']
+                  as List<dynamic>?)
+              ?.map((e) => Movie.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
   }
 
@@ -80,6 +119,9 @@ class MovieDetail {
       'genres': genres.map((g) => g.toJson()).toList(),
       'production_companies':
           productionCompanies.map((p) => p.toJson()).toList(),
+      'videos': {'results': videos.map((v) => v.toJson()).toList()},
+      'credits': {'cast': cast.map((c) => c.toJson()).toList()},
+      'similar': {'results': similar.map((m) => m.toJson()).toList()},
     };
   }
 }

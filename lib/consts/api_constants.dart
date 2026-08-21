@@ -9,14 +9,23 @@ class ApiConstants {
   static const String posterSizeLarge = 'w500';
   static const String imageSizeOriginal = 'original';
 
-  static const String trendingMoviesDay = '/trending/movie/day';
-  static const String trendingMoviesWeek = '/trending/movie/week';
+  static String trendingMovies(String timeWindow) =>
+      '/trending/movie/$timeWindow';
 
   static const String searchMovie = '/search/movie';
 
-  static String movieDetail(int movieId) => '/movie/$movieId';
+  // static String movieDetail(int movieId) => '/movie/$movieId';
 
-  static const String configuration = '/configuration';
+  // static String movieVideos(int movieId) => '/movie/$movieId/videos';
+
+  // static String movieCredits(int movieId) => '/movie/$movieId/credits';
+
+  // static String movieSimilar(int movieId) => '/movie/$movieId/similar';
+
+  static String movieDetailWithExtras(int movieId) =>
+      '/movie/$movieId?append_to_response=videos,credits,similar';
+
+  // static const String configuration = '/configuration';
 
   static String imageUrl(String path, {String size = posterSizeMedium}) {
     return '$imageBaseUrl/$size$path';

@@ -32,6 +32,12 @@ class MovieProvider extends ChangeNotifier {
   bool get isDetailLoading => _isDetailLoading;
   String? get detailErrorMessage => _detailErrorMessage;
 
+  MovieProviderStatus get detailStatus {
+    if (_isDetailLoading) return MovieProviderStatus.loading;
+    if (_detailErrorMessage != null) return MovieProviderStatus.error;
+    return MovieProviderStatus.success;
+  }
+
   List<Movie> _searchResults = [];
   bool _isSearching = false;
   String? _searchErrorMessage;
