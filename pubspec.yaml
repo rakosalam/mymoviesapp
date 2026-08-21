@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.11.0
 
+  # Used to load the Manrope font family for the app's typography.
+  google_fonts: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
