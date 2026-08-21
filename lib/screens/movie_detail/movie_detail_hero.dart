@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts/api_constants.dart';
@@ -46,13 +47,13 @@ class MovieDetailHero extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 movie.backdropPath != null
-                    ? Image.network(
-                        ApiConstants.imageUrl(
+                    ? CachedNetworkImage(
+                        imageUrl: ApiConstants.imageUrl(
                           movie.backdropPath!,
                           size: ApiConstants.posterSizeLarge,
                         ),
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) =>
+                        errorWidget: (_, _, _) =>
                             ColoredBox(color: colorScheme.surfaceContainerHigh),
                       )
                     : ColoredBox(color: colorScheme.surfaceContainerHigh),
@@ -110,13 +111,13 @@ class MovieDetailHero extends StatelessWidget {
                     width: 96,
                     height: _posterHeight,
                     child: movie.posterPath != null
-                        ? Image.network(
-                            ApiConstants.imageUrl(
+                        ? CachedNetworkImage(
+                            imageUrl: ApiConstants.imageUrl(
                               movie.posterPath!,
                               size: ApiConstants.posterSizeMedium,
                             ),
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) => ColoredBox(
+                            errorWidget: (_, _, _) => ColoredBox(
                               color: colorScheme.surfaceContainerHigh,
                               child: Icon(
                                 Icons.local_movies_outlined,

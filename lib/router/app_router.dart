@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../screens/movie_detail/movie_detail_page.dart';
 import '../screens/search/search_page.dart';
 import '../screens/trending/trending_page.dart';
+import '../screens/watchlist/watchlist_page.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 
 /// App route paths, kept in one place so screens don't hardcode strings.
@@ -43,8 +44,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.watchlist,
-              builder: (context, state) =>
-                  const Center(child: Text('Watchlist Page')),
+              builder: (context, state) => const WatchlistPage(),
             ),
           ],
         ),

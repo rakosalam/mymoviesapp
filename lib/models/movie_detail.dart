@@ -48,6 +48,18 @@ class MovieDetail {
     this.similar = const [],
   });
 
+  /// A [Movie] view of this detail, for places (like the watchlist) that
+  /// operate on the shared, lighter-weight model.
+  Movie get asMovie => Movie(
+    id: id,
+    title: title,
+    posterPath: posterPath,
+    backdropPath: backdropPath,
+    overview: overview,
+    voteAverage: voteAverage,
+    releaseDate: releaseDate,
+  );
+
   /// The first official YouTube trailer, if one was fetched via
   /// `append_to_response=videos`.
   Video? get trailer {

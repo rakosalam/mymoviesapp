@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 
 import 'provider/movie_provider.dart';
 import 'provider/theme_provider.dart';
-import 'router/app_router.dart';
+import 'provider/watchlater_provider.dart';
+
 import 'services/movie_service.dart';
+
+import 'router/app_router.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => MovieProvider()),
+        ChangeNotifierProvider(create: (_) => WatchlaterProvider()),
         Provider<MovieService>(create: (_) => MovieService(_createDio())),
       ],
       child: Consumer<ThemeProvider>(

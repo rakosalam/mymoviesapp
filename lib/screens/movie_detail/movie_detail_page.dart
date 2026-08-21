@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movieapp/provider/watchlater_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,8 +25,6 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  bool _isInWatchlist = false;
-
   @override
   void initState() {
     super.initState();
@@ -36,10 +35,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     context.read<MovieProvider>().loadMovieDetail(
       () => context.read<MovieService>().getMovieDetail(widget.movieId),
     );
-  }
-
-  void _toggleWatchlist() {
-    setState(() => _isInWatchlist = !_isInWatchlist);
   }
 
   @override
@@ -61,8 +56,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             const MovieDetailSkeleton(),
           MovieProviderStatus.success => _MovieDetailContent(
             movie: movie!,
-            isInWatchlist: _isInWatchlist,
-            onToggleWatchlist: _toggleWatchlist,
+            isInWatchlist: context.watch<WatchlaterProvider>().isInWatchlater(
+              movie.id,
+            ),
+            onToggleWatchlist: () => context
+                .read<WatchlaterProvider>()
+                .toggleWatchlater(movie.asMovie),
           ),
         },
       ),

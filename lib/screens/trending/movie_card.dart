@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movieapp/consts/api_constants.dart';
 
+import '../../consts/api_constants.dart';
 import '../../models/movie.dart';
 import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
@@ -43,10 +44,12 @@ class MovieCard extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: movie.posterPath != null
-                        ? Image.network(
-                            ApiConstants.imageUrl(movie.posterPath!),
+                        ? CachedNetworkImage(
+                            imageUrl: ApiConstants.imageUrl(
+                              movie.posterPath!,
+                            ),
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) =>
+                            errorWidget: (_, _, _) =>
                                 _PosterFallback(title: movie.title),
                           )
                         : _PosterFallback(title: movie.title),

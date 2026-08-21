@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../consts/api_constants.dart';
@@ -44,13 +45,13 @@ class MovieListTile extends StatelessWidget {
                 width: 56,
                 height: 84,
                 child: movie.posterPath != null
-                    ? Image.network(
-                        ApiConstants.imageUrl(
+                    ? CachedNetworkImage(
+                        imageUrl: ApiConstants.imageUrl(
                           movie.posterPath!,
                           size: ApiConstants.posterSizeSmall,
                         ),
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => ColoredBox(
+                        errorWidget: (_, _, _) => ColoredBox(
                           color: colorScheme.surfaceContainerHigh,
                           child: Icon(
                             Icons.local_movies_outlined,

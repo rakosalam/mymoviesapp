@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/watchlater_provider.dart';
 import '../../provider/movie_provider.dart';
 import '../../router/app_router.dart';
 import '../../services/movie_service.dart';
 import '../../theme/app_spacing.dart';
 import '../../widgets/movie_list_tile.dart';
+
 import 'movie_card.dart';
 import 'movie_error_view.dart';
 import 'movie_grid_skeleton.dart';
@@ -24,20 +26,10 @@ class TrendingPage extends StatefulWidget {
 class _TrendingPageState extends State<TrendingPage> {
   TrendingTimeWindow _timeWindow = TrendingTimeWindow.day;
   MovieViewMode _viewMode = MovieViewMode.list;
-  final Set<int> _bookmarkedIds = {};
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadMovies());
-  }
-
-  void _toggleBookmark(int movieId) {
-    setState(() {
-      if (!_bookmarkedIds.add(movieId)) {
-        _bookmarkedIds.remove(movieId);
-      }
-    });
   }
 
   void _loadMovies() {
@@ -101,8 +93,12 @@ class _TrendingPageState extends State<TrendingPage> {
                         final movie = movieProvider.movies[index];
                         return MovieCard(
                           movie: movie,
-                          isBookmarked: _bookmarkedIds.contains(movie.id),
-                          onBookmarkTap: () => _toggleBookmark(movie.id),
+                          isBookmarked: context
+                              .watch<WatchlaterProvider>()
+                              .isInWatchlater(movie.id),
+                          onBookmarkTap: () => context
+                              .read<WatchlaterProvider>()
+                              .toggleWatchlater(movie),
                           onTap: () =>
                               context.push(AppRoutes.movieDetail(movie.id)),
                         );
@@ -117,8 +113,12 @@ class _TrendingPageState extends State<TrendingPage> {
                         final movie = movieProvider.movies[index];
                         return MovieListTile(
                           movie: movie,
-                          isBookmarked: _bookmarkedIds.contains(movie.id),
-                          onBookmarkTap: () => _toggleBookmark(movie.id),
+                          isBookmarked: context
+                              .watch<WatchlaterProvider>()
+                              .isInWatchlater(movie.id),
+                          onBookmarkTap: () => context
+                              .read<WatchlaterProvider>()
+                              .toggleWatchlater(movie),
                           onTap: () =>
                               context.push(AppRoutes.movieDetail(movie.id)),
                         );

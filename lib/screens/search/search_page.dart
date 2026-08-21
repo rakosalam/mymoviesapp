@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:movieapp/provider/watchlater_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/movie_provider.dart';
@@ -98,6 +99,12 @@ class _SearchPageState extends State<SearchPage> {
                 final movie = movieProvider.searchResults[index];
                 return MovieListTile(
                   movie: movie,
+                  isBookmarked: context
+                      .watch<WatchlaterProvider>()
+                      .isInWatchlater(movie.id),
+                  onBookmarkTap: () => context
+                      .read<WatchlaterProvider>()
+                      .toggleWatchlater(movie),
                   onTap: () => context.push(AppRoutes.movieDetail(movie.id)),
                 );
               },
