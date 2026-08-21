@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import '../models/movie.dart';
 import '../models/movie_detail.dart';
 
+enum MovieProviderStatus { loading, error, success }
+
 class MovieProvider extends ChangeNotifier {
   static const _searchDebounceDuration = Duration(milliseconds: 500);
 
@@ -15,6 +17,12 @@ class MovieProvider extends ChangeNotifier {
   List<Movie> get movies => _movies;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+
+  MovieProviderStatus get moviesStatus {
+    if (_isLoading) return MovieProviderStatus.loading;
+    if (_errorMessage != null) return MovieProviderStatus.error;
+    return MovieProviderStatus.success;
+  }
 
   MovieDetail? _movieDetail;
   bool _isDetailLoading = false;

@@ -1,41 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:movieapp/provider/movie_provider.dart';
+import 'package:movieapp/services/movie_service.dart';
+import 'package:provider/provider.dart';
 
-import '../../models/movie.dart';
 import '../../theme/app_spacing.dart';
 import 'movie_card.dart';
+import 'movie_error_view.dart';
+import 'movie_grid_skeleton.dart';
 import 'trending_filter.dart';
 import 'trending_header.dart';
-
-const _dummyMovies = [
-  Movie(
-    id: 1,
-    title: 'Stellar Voyage',
-    overview: 'A lone astronaut charts the unknown.',
-    voteAverage: 8.5,
-    releaseDate: '2024-03-12',
-  ),
-  Movie(
-    id: 2,
-    title: 'Midnight Echoes',
-    overview: 'A noir thriller through empty streets.',
-    voteAverage: 7.9,
-    releaseDate: '2023-11-02',
-  ),
-  Movie(
-    id: 3,
-    title: 'The Sylvan King',
-    overview: 'An epic fantasy journey beyond imagination.',
-    voteAverage: 9.2,
-    releaseDate: '2024-10-26',
-  ),
-  Movie(
-    id: 4,
-    title: 'Apex Protocol',
-    overview: 'A journey beyond the known.',
-    voteAverage: 8.1,
-    releaseDate: '2024-06-01',
-  ),
-];
 
 class TrendingPage extends StatefulWidget {
   const TrendingPage({super.key});
@@ -48,6 +21,12 @@ class _TrendingPageState extends State<TrendingPage> {
   TrendingTimeWindow _timeWindow = TrendingTimeWindow.day;
   final Set<int> _bookmarkedIds = {};
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadMovies());
+  }
+
   void _toggleBookmark(int movieId) {
     setState(() {
       if (!_bookmarkedIds.add(movieId)) {
@@ -56,38 +35,57 @@ class _TrendingPageState extends State<TrendingPage> {
     });
   }
 
+  void _loadMovies() {
+    context.read<MovieProvider>().loadMovies(
+      () =>
+          context.read<MovieService>().getTrendingMovies(_timeWindow.apiValue),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final movieProvider = context.watch<MovieProvider>();
+
     return Column(
       children: [
         const TrendingHeader(),
         const SizedBox(height: AppSpacing.sm),
         TrendingFilter(
           selected: _timeWindow,
-          onChanged: (value) => setState(() => _timeWindow = value),
+          onChanged: (value) {
+            setState(() => _timeWindow = value);
+            _loadMovies();
+          },
         ),
         const SizedBox(height: AppSpacing.md),
         Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-            ).copyWith(bottom: AppSpacing.md),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: AppSpacing.md,
-              crossAxisSpacing: AppSpacing.md,
-              childAspectRatio: 0.56,
-            ),
-            itemCount: _dummyMovies.length,
-            itemBuilder: (context, index) {
-              final movie = _dummyMovies[index];
-              return MovieCard(
-                movie: movie,
-                isBookmarked: _bookmarkedIds.contains(movie.id),
-                onBookmarkTap: () => _toggleBookmark(movie.id),
-              );
-            },
-          ),
+          child: switch (movieProvider.moviesStatus) {
+            MovieProviderStatus.loading => const MovieGridSkeleton(),
+            MovieProviderStatus.error => MovieErrorView(
+                message: movieProvider.errorMessage!,
+                onRetry: _loadMovies,
+              ),
+            MovieProviderStatus.success => GridView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                ).copyWith(bottom: AppSpacing.md),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: AppSpacing.md,
+                  crossAxisSpacing: AppSpacing.md,
+                  childAspectRatio: 0.56,
+                ),
+                itemCount: movieProvider.movies.length,
+                itemBuilder: (context, index) {
+                  final movie = movieProvider.movies[index];
+                  return MovieCard(
+                    movie: movie,
+                    isBookmarked: _bookmarkedIds.contains(movie.id),
+                    onBookmarkTap: () => _toggleBookmark(movie.id),
+                  );
+                },
+              ),
+          },
         ),
       ],
     );

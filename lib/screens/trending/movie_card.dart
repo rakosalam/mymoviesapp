@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movieapp/consts/api_constants.dart';
 
 import '../../models/movie.dart';
 import '../../theme/app_radius.dart';
@@ -43,11 +44,10 @@ class MovieCard extends StatelessWidget {
                   Positioned.fill(
                     child: movie.posterPath != null
                         ? Image.network(
-                            movie.posterPath!,
+                            ApiConstants.imageUrl(movie.posterPath!),
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) => _PosterFallback(
-                              title: movie.title,
-                            ),
+                            errorBuilder: (_, _, _) =>
+                                _PosterFallback(title: movie.title),
                           )
                         : _PosterFallback(title: movie.title),
                   ),
@@ -76,7 +76,9 @@ class MovieCard extends StatelessWidget {
                     ),
                     Text(
                       _year,
-                      style: AppTypography.labelMd(colorScheme.onSurfaceVariant),
+                      style: AppTypography.labelMd(
+                        colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
