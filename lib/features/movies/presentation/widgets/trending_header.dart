@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../theme/app_radius.dart';
 import '../../../../theme/app_spacing.dart';
 import '../../../../theme/app_typography.dart';
+import '../../../../widgets/theme_mode_sheet.dart';
 
-/// Top app header: ticket icon, "CineTrack" wordmark, dark-mode toggle.
+/// Top app header: ticket icon, "CineTrack" wordmark, appearance picker.
 /// Wrapped in [SafeArea] so it never renders under the notch/status bar.
 class TrendingHeader extends StatelessWidget {
-  const TrendingHeader({super.key, this.onThemeToggle});
-
-  final VoidCallback? onThemeToggle;
+  const TrendingHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +52,7 @@ class TrendingHeader extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: onThemeToggle,
+              onPressed: () => showThemeModeSheet(context),
               icon: Icon(
                 isDark ? Icons.dark_mode : Icons.dark_mode_outlined,
                 color: colorScheme.primary,

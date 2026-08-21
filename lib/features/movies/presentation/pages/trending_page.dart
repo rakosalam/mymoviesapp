@@ -60,7 +60,7 @@ class _TrendingPageState extends State<TrendingPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TrendingHeader(onThemeToggle: () {}),
+        const TrendingHeader(),
         const SizedBox(height: AppSpacing.sm),
         TrendingFilter(
           selected: _timeWindow,
