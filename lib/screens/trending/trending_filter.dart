@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_radius.dart';
-import '../../../../theme/app_spacing.dart';
-import '../../../../theme/app_typography.dart';
+import '../../theme/app_radius.dart';
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 
 /// Matches TMDB's `time_window` path param for `/trending/movie/{time_window}`.
 enum TrendingTimeWindow {

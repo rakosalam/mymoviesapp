@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_radius.dart';
-import '../../../../theme/app_spacing.dart';
-import '../../../../theme/app_typography.dart';
-import '../../../../widgets/theme_mode_sheet.dart';
+import '../../modals/theme_mode_sheet.dart';
+import '../../theme/app_radius.dart';
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 
 /// Top app header: ticket icon, "CineTrack" wordmark, appearance picker.
 /// Wrapped in [SafeArea] so it never renders under the notch/status bar.

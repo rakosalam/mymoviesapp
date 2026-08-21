@@ -1,15 +1,18 @@
-import '../../domain/entities/production_company.dart';
+class ProductionCompany {
+  final int id;
+  final String name;
+  final String? logoPath;
+  final String? originCountry;
 
-class ProductionCompanyModel extends ProductionCompany {
-  const ProductionCompanyModel({
-    required super.id,
-    required super.name,
-    super.logoPath,
-    super.originCountry,
+  const ProductionCompany({
+    required this.id,
+    required this.name,
+    this.logoPath,
+    this.originCountry,
   });
 
-  factory ProductionCompanyModel.fromJson(Map<String, dynamic> json) {
-    return ProductionCompanyModel(
+  factory ProductionCompany.fromJson(Map<String, dynamic> json) {
+    return ProductionCompany(
       id: json['id'] as int,
       name: json['name'] as String,
       logoPath: json['logo_path'] as String?,

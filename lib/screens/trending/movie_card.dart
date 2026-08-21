@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_radius.dart';
-import '../../../../theme/app_spacing.dart';
-import '../../../../theme/app_typography.dart';
-import '../../domain/entities/movie.dart';
+import '../../models/movie.dart';
+import '../../theme/app_radius.dart';
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
 
 /// Poster card for a single movie: rating badge, poster art (or a fallback
 /// gradient when there's no `posterPath` yet), title, release year, and a

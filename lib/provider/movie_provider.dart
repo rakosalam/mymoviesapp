@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-import '../../domain/entities/movie.dart';
-import '../../domain/entities/movie_detail.dart';
+import '../models/movie.dart';
+import '../models/movie_detail.dart';
 
 class MovieProvider extends ChangeNotifier {
   static const _searchDebounceDuration = Duration(milliseconds: 500);

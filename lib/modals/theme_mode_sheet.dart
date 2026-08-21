@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/theme_provider.dart';
 import '../theme/app_radius.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
-import '../theme/theme_provider.dart';
 
 const _options = [
   (mode: ThemeMode.light, label: 'Light', icon: Icons.light_mode_outlined),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_spacing.dart';
-import '../../domain/entities/movie.dart';
-import '../widgets/movie_card.dart';
-import '../widgets/trending_filter.dart';
-import '../widgets/trending_header.dart';
+import '../../models/movie.dart';
+import '../../theme/app_spacing.dart';
+import 'movie_card.dart';
+import 'trending_filter.dart';
+import 'trending_header.dart';
 
 const _dummyMovies = [
   Movie(
