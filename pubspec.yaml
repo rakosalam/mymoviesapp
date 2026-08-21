@@ -38,6 +38,7 @@ dependencies:
 
   # Used to load the Manrope font family for the app's typography.
   google_fonts: ^6.2.1
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
