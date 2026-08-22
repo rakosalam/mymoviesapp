@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/movie_detail/movie_detail_page.dart';
+import '../screens/movie_detail/trailer_player_page.dart';
 import '../screens/search/search_page.dart';
 import '../screens/trending/trending_page.dart';
 import '../screens/watchlist/watchlist_page.dart';
@@ -15,6 +16,7 @@ class AppRoutes {
   static const search = '/search';
   static const watchlist = '/watchlist';
   static String movieDetail(int movieId) => '/movie/$movieId';
+  static String trailer(String videoId) => '/trailer/$videoId';
 }
 
 final GoRouter appRouter = GoRouter(
@@ -58,6 +60,13 @@ final GoRouter appRouter = GoRouter(
           movieId: movieId,
           hideExtras: state.extra as bool? ?? false,
         );
+      },
+    ),
+    GoRoute(
+      path: '/trailer/:videoId',
+      builder: (context, state) {
+        final videoId = state.pathParameters['videoId']!;
+        return TrailerPlayerPage(videoId: videoId);
       },
     ),
   ],

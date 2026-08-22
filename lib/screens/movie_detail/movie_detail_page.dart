@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/movie_detail.dart';
 import '../../provider/movie_provider.dart';
@@ -165,10 +164,7 @@ class _MovieDetailContent extends StatelessWidget {
                     child: OutlinedButton.icon(
                       onPressed: trailer == null
                           ? null
-                          : () => launchUrl(
-                              Uri.parse(trailer.youtubeUrl),
-                              mode: LaunchMode.externalApplication,
-                            ),
+                          : () => context.push(AppRoutes.trailer(trailer.key)),
                       icon: const Icon(Icons.play_circle_outline),
                       label: const Text('Watch Trailer'),
                     ),
