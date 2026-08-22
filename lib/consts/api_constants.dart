@@ -1,7 +1,10 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://api.themoviedb.org/3';
+  static String get baseUrl =>
+      dotenv.env['TMDB_BASE_URL'] ?? 'https://api.themoviedb.org/3';
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p';
 
   static const String posterSizeSmall = 'w200';
@@ -12,23 +15,11 @@ class ApiConstants {
   static String trendingMovies(String timeWindow) =>
       '/trending/movie/$timeWindow';
 
-  //static const String searchMovie = '/search/movie';
-
-  // static String movieDetail(int movieId) => '/movie/$movieId';
-
-  // static String movieVideos(int movieId) => '/movie/$movieId/videos';
-
-  // static String movieCredits(int movieId) => '/movie/$movieId/credits';
-
-  // static String movieSimilar(int movieId) => '/movie/$movieId/similar';
-
   static String searchMovie(String query, {int page = 1}) =>
       '/search/movie?query=${Uri.encodeQueryComponent(query)}&page=$page&include_adult=false';
 
   static String movieDetailWithExtras(int movieId) =>
       '/movie/$movieId?append_to_response=videos,credits,similar';
-
-  // static const String configuration = '/configuration';
 
   static String imageUrl(String path, {String size = posterSizeMedium}) {
     return '$imageBaseUrl/$size$path';

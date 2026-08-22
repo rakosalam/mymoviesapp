@@ -4,18 +4,12 @@ import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 
-/// Back button, search text field, and a filter icon. Wrapped in [SafeArea]
-/// so it never renders under the notch/status bar.
+/// Back button and search text field. Wrapped in [SafeArea] so it never
+/// renders under the notch/status bar.
 class SearchHeader extends StatefulWidget {
-  const SearchHeader({
-    super.key,
-    this.onBackTap,
-    this.onFilterTap,
-    this.onChanged,
-  });
+  const SearchHeader({super.key, this.onBackTap, this.onChanged});
 
   final VoidCallback? onBackTap;
-  final VoidCallback? onFilterTap;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -95,10 +89,6 @@ class _SearchHeaderState extends State<SearchHeader> {
                 ),
               ),
             ),
-            // IconButton(
-            //   onPressed: widget.onFilterTap,
-            //   icon: Icon(Icons.tune, color: colorScheme.onSurface),
-            // ),
           ],
         ),
       ),

@@ -92,7 +92,6 @@ class _SearchPageState extends State<SearchPage> {
       children: [
         SearchHeader(
           onBackTap: () => context.push(AppRoutes.trending),
-          onFilterTap: () {},
           onChanged: _onSearchChanged,
         ),
         Expanded(
