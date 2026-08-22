@@ -97,14 +97,15 @@ class _TrendingPageState extends State<TrendingPage> {
         Expanded(
           child: switch (movieProvider.moviesStatus) {
             MovieProviderStatus.loading => const MovieGridSkeleton(),
-            MovieProviderStatus.error => _isOffline
-                ? NoInternetView(
-                    onGoToWatchlist: () => context.go(AppRoutes.watchlist),
-                  )
-                : MovieErrorView(
-                    message: movieProvider.errorMessage!,
-                    onRetry: _loadMovies,
-                  ),
+            MovieProviderStatus.error =>
+              _isOffline
+                  ? NoInternetView(
+                      onGoToWatchlist: () => context.go(AppRoutes.watchlist),
+                    )
+                  : MovieErrorView(
+                      message: movieProvider.errorMessage!,
+                      onRetry: _loadMovies,
+                    ),
             MovieProviderStatus.success =>
               _viewMode == MovieViewMode.grid
                   ? GridView.builder(

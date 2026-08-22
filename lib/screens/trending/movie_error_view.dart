@@ -6,7 +6,11 @@ import '../../theme/app_typography.dart';
 /// Shown when fetching trending movies fails (network error, TMDB error,
 /// etc). [message] is the raw error text; [onRetry] re-triggers the fetch.
 class MovieErrorView extends StatelessWidget {
-  const MovieErrorView({super.key, required this.message, required this.onRetry});
+  const MovieErrorView({
+    super.key,
+    required this.message,
+    required this.onRetry,
+  });
 
   final String message;
   final VoidCallback onRetry;
@@ -39,10 +43,7 @@ class MovieErrorView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.lg),
-            ElevatedButton(
-              onPressed: onRetry,
-              child: const Text('Retry'),
-            ),
+            ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ),
       ),

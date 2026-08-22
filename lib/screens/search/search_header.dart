@@ -71,7 +71,10 @@ class _SearchHeaderState extends State<SearchHeader> {
                   hintStyle: AppTypography.bodyLg(colorScheme.onSurfaceVariant),
                   filled: true,
                   fillColor: colorScheme.surfaceContainer,
-                  prefixIcon: Icon(Icons.search, color: colorScheme.onSurfaceVariant),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                   suffixIcon: _controller.text.isEmpty
                       ? null
                       : IconButton(
@@ -92,10 +95,10 @@ class _SearchHeaderState extends State<SearchHeader> {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: widget.onFilterTap,
-              icon: Icon(Icons.tune, color: colorScheme.onSurface),
-            ),
+            // IconButton(
+            //   onPressed: widget.onFilterTap,
+            //   icon: Icon(Icons.tune, color: colorScheme.onSurface),
+            // ),
           ],
         ),
       ),

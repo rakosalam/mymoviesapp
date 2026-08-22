@@ -24,10 +24,7 @@ class SimilarMoviesRow extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: AppSpacing.md),
-            child: SizedBox(
-              width: 130,
-              child: MovieCard(movie: movies[index]),
-            ),
+            child: SizedBox(width: 130, child: MovieCard(movie: movies[index])),
           );
         },
       ),

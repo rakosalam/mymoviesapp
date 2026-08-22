@@ -65,11 +65,23 @@ class _MovieDetailSkeletonState extends State<MovieDetailSkeleton>
                   const SizedBox(height: AppSpacing.sm),
                   Row(
                     children: [
-                      _Box(width: 48, height: 16, color: colorScheme.surfaceContainerHigh),
+                      _Box(
+                        width: 48,
+                        height: 16,
+                        color: colorScheme.surfaceContainerHigh,
+                      ),
                       const SizedBox(width: AppSpacing.xs),
-                      _Box(width: 48, height: 16, color: colorScheme.surfaceContainerHigh),
+                      _Box(
+                        width: 48,
+                        height: 16,
+                        color: colorScheme.surfaceContainerHigh,
+                      ),
                       const SizedBox(width: AppSpacing.xs),
-                      _Box(width: 64, height: 16, color: colorScheme.surfaceContainerHigh),
+                      _Box(
+                        width: 64,
+                        height: 16,
+                        color: colorScheme.surfaceContainerHigh,
+                      ),
                     ],
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -87,15 +99,35 @@ class _MovieDetailSkeletonState extends State<MovieDetailSkeleton>
                     radius: AppRadius.mdBorder,
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  _Box(width: 90, height: 20, color: colorScheme.surfaceContainerHigh),
+                  _Box(
+                    width: 90,
+                    height: 20,
+                    color: colorScheme.surfaceContainerHigh,
+                  ),
                   const SizedBox(height: AppSpacing.sm),
-                  _Box(width: double.infinity, height: 14, color: colorScheme.surfaceContainerHigh),
+                  _Box(
+                    width: double.infinity,
+                    height: 14,
+                    color: colorScheme.surfaceContainerHigh,
+                  ),
                   const SizedBox(height: AppSpacing.xs),
-                  _Box(width: double.infinity, height: 14, color: colorScheme.surfaceContainerHigh),
+                  _Box(
+                    width: double.infinity,
+                    height: 14,
+                    color: colorScheme.surfaceContainerHigh,
+                  ),
                   const SizedBox(height: AppSpacing.xs),
-                  _Box(width: 200, height: 14, color: colorScheme.surfaceContainerHigh),
+                  _Box(
+                    width: 200,
+                    height: 14,
+                    color: colorScheme.surfaceContainerHigh,
+                  ),
                   const SizedBox(height: AppSpacing.lg),
-                  _Box(width: 60, height: 20, color: colorScheme.surfaceContainerHigh),
+                  _Box(
+                    width: 60,
+                    height: 20,
+                    color: colorScheme.surfaceContainerHigh,
+                  ),
                 ],
               ),
             ),
@@ -142,7 +174,11 @@ class _Box extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: radius ?? AppRadius.smBorder,
-      child: SizedBox(width: width, height: height, child: ColoredBox(color: color)),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: ColoredBox(color: color),
+      ),
     );
   }
 }

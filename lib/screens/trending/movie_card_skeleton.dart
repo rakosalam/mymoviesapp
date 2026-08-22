@@ -71,10 +71,7 @@ class _Bar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: AppRadius.smBorder,
-      ),
+      decoration: BoxDecoration(color: color, borderRadius: AppRadius.smBorder),
       child: SizedBox(width: width, height: height),
     );
   }

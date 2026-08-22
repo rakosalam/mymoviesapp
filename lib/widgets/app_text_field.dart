@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
@@ -46,7 +45,6 @@ class AppTextField extends StatelessWidget {
   }
 }
 
-
 class AppSearchField extends StatelessWidget {
   const AppSearchField({
     super.key,
@@ -74,10 +72,7 @@ class AppSearchField extends StatelessWidget {
         prefixIcon: const Icon(Icons.search),
         suffixIcon: onFilterTap == null
             ? null
-            : IconButton(
-                icon: const Icon(Icons.tune),
-                onPressed: onFilterTap,
-              ),
+            : IconButton(icon: const Icon(Icons.tune), onPressed: onFilterTap),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(9999),
           borderSide: BorderSide.none,

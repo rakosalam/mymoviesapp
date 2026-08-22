@@ -56,7 +56,8 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final onSurfaceMuted = Theme.of(context).textTheme.labelMedium?.color ??
+    final onSurfaceMuted =
+        Theme.of(context).textTheme.labelMedium?.color ??
         colorScheme.onSurfaceVariant;
 
     return SafeArea(
@@ -136,10 +137,7 @@ class _NavItem extends StatelessWidget {
                 children: [
                   Icon(item.icon, size: 20, color: inactiveColor),
                   const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    item.label,
-                    style: AppTypography.labelMd(inactiveColor),
-                  ),
+                  Text(item.label, style: AppTypography.labelMd(inactiveColor)),
                 ],
               ),
       ),

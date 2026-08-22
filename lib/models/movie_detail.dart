@@ -75,7 +75,8 @@ class MovieDetail {
   factory MovieDetail.fromJson(Map<String, dynamic> json) {
     return MovieDetail(
       id: json['id'] as int,
-      title: json['title'] as String? ?? json['original_title'] as String? ?? '',
+      title:
+          json['title'] as String? ?? json['original_title'] as String? ?? '',
       posterPath: json['poster_path'] as String?,
       backdropPath: json['backdrop_path'] as String?,
       overview: json['overview'] as String? ?? '',
@@ -87,25 +88,32 @@ class MovieDetail {
       budget: json['budget'] as int? ?? 0,
       revenue: json['revenue'] as int? ?? 0,
       status: json['status'] as String? ?? '',
-      genres: (json['genres'] as List<dynamic>?)
+      genres:
+          (json['genres'] as List<dynamic>?)
               ?.map((e) => Genre.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      productionCompanies: (json['production_companies'] as List<dynamic>?)
-              ?.map((e) => ProductionCompany.fromJson(e as Map<String, dynamic>))
+      productionCompanies:
+          (json['production_companies'] as List<dynamic>?)
+              ?.map(
+                (e) => ProductionCompany.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
-      videos: ((json['videos'] as Map<String, dynamic>?)?['results']
+      videos:
+          ((json['videos'] as Map<String, dynamic>?)?['results']
                   as List<dynamic>?)
               ?.map((e) => Video.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      cast: ((json['credits'] as Map<String, dynamic>?)?['cast']
+      cast:
+          ((json['credits'] as Map<String, dynamic>?)?['cast']
                   as List<dynamic>?)
               ?.map((e) => CastMember.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      similar: ((json['similar'] as Map<String, dynamic>?)?['results']
+      similar:
+          ((json['similar'] as Map<String, dynamic>?)?['results']
                   as List<dynamic>?)
               ?.map((e) => Movie.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -129,8 +137,9 @@ class MovieDetail {
       'revenue': revenue,
       'status': status,
       'genres': genres.map((g) => g.toJson()).toList(),
-      'production_companies':
-          productionCompanies.map((p) => p.toJson()).toList(),
+      'production_companies': productionCompanies
+          .map((p) => p.toJson())
+          .toList(),
       'videos': {'results': videos.map((v) => v.toJson()).toList()},
       'credits': {'cast': cast.map((c) => c.toJson()).toList()},
       'similar': {'results': similar.map((m) => m.toJson()).toList()},

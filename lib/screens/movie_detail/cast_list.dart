@@ -58,7 +58,10 @@ class _CastAvatar extends StatelessWidget {
                   )
                 : null,
             child: member.profilePath == null
-                ? Icon(Icons.person_outline, color: colorScheme.onSurfaceVariant)
+                ? Icon(
+                    Icons.person_outline,
+                    color: colorScheme.onSurfaceVariant,
+                  )
                 : null,
           ),
           const SizedBox(height: AppSpacing.xs),

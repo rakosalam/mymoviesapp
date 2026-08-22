@@ -45,9 +45,7 @@ class MovieCard extends StatelessWidget {
                   Positioned.fill(
                     child: movie.posterPath != null
                         ? CachedNetworkImage(
-                            imageUrl: ApiConstants.imageUrl(
-                              movie.posterPath!,
-                            ),
+                            imageUrl: ApiConstants.imageUrl(movie.posterPath!),
                             fit: BoxFit.cover,
                             errorWidget: (_, _, _) =>
                                 _PosterFallback(title: movie.title),
