@@ -4,7 +4,7 @@ import '../../theme/app_radius.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 
-const _suggestions = ['Action', 'Sci-Fi', 'Christopher Nolan', 'A24 Films'];
+const _suggestions = ['john wick', 'The Dark Knight', 'Inception', 'naruto'];
 
 /// Shown before the user has typed anything: a prompt plus a handful of
 /// tappable search suggestions.

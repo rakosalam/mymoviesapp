@@ -11,12 +11,6 @@ class AppBottomNavItem {
   final String label;
 }
 
-/// CineTrack bottom navigation bar: the active item shows as an amber pill
-/// with icon + label side by side; inactive items show icon above label,
-/// muted. [onTap] reports the tapped index; the caller is responsible for
-/// routing (see [AppRoutes]/`app_router.dart`). [initialIndex] also syncs
-/// the highlighted item when navigation happens externally, e.g. via
-/// `context.go(...)` from elsewhere in the app rather than a tap here.
 class AppBottomNavBar extends StatefulWidget {
   const AppBottomNavBar({
     super.key,
@@ -74,7 +68,8 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (var i = 0; i < widget.items.length; i++)
+            for (var i = 0; i < widget.items.length; i++) ...[
+              if (i > 0) const SizedBox(width: AppSpacing.xs),
               _NavItem(
                 item: widget.items[i],
                 selected: i == _selectedIndex,
@@ -83,6 +78,7 @@ class _AppBottomNavBarState extends State<AppBottomNavBar> {
                 inactiveColor: onSurfaceMuted,
                 onTap: () => _select(i),
               ),
+            ],
           ],
         ),
       ),
@@ -111,35 +107,35 @@ class _NavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: AppRadius.fullBorder,
+      borderRadius: AppRadius.mdBorder,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        padding: EdgeInsets.symmetric(
-          horizontal: selected ? AppSpacing.md : AppSpacing.sm,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
           vertical: AppSpacing.sm,
         ),
         decoration: BoxDecoration(
           color: selected ? activeBackground : Colors.transparent,
-          borderRadius: AppRadius.fullBorder,
+          borderRadius: AppRadius.mdBorder,
         ),
-        child: selected
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(item.icon, size: 20, color: activeColor),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(item.label, style: AppTypography.labelMd(activeColor)),
-                ],
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(item.icon, size: 20, color: inactiveColor),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(item.label, style: AppTypography.labelMd(inactiveColor)),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              item.icon,
+              size: 20,
+              color: selected ? activeColor : inactiveColor,
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              item.label,
+              style: AppTypography.labelMd(
+                selected ? activeColor : inactiveColor,
               ),
+            ),
+          ],
+        ),
       ),
     );
   }
