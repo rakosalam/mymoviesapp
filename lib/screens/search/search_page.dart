@@ -1,12 +1,16 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movieapp/provider/watchlater_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/movie_provider.dart';
+import '../../provider/watchlater_provider.dart';
 import '../../router/app_router.dart';
 import '../../services/movie_service.dart';
 import '../../widgets/movie_list_tile.dart';
+import '../../widgets/no_internet_view.dart';
 import '../trending/movie_error_view.dart';
 import 'search_empty_state.dart';
 import 'search_header.dart';
@@ -23,6 +27,9 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String _query = '';
   final _scrollcontroller = ScrollController();
+  bool _isOffline = false;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
   void _onScroll() {
     final threshold = _scrollcontroller.position.maxScrollExtent - 200;
     if (_scrollcontroller.position.pixels >= threshold) {
@@ -37,18 +44,33 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     _scrollcontroller.addListener(_onScroll);
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      result,
+    ) {
+      setState(() => _isOffline = result.contains(ConnectivityResult.none));
+    });
   }
 
   @override
   void dispose() {
     _scrollcontroller.dispose();
+    _connectivitySubscription?.cancel();
     super.dispose();
+  }
+
+  Future<void> _refreshOfflineStatus() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (!mounted) return;
+    setState(() {
+      _isOffline = connectivityResult.contains(ConnectivityResult.none);
+    });
   }
 
   void _onSearchChanged(String value) {
     setState(() {
       _query = value;
     });
+    _refreshOfflineStatus();
     context.read<MovieProvider>().searchMovies(
       value,
       (q, p) => context.read<MovieService>().searchMovies(q, page: p),
@@ -56,6 +78,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _retrySearch() {
+    _refreshOfflineStatus();
     context.read<MovieProvider>().searchMovies(
       _query,
       (q, p) => context.read<MovieService>().searchMovies(q, page: p),
@@ -77,10 +100,15 @@ class _SearchPageState extends State<SearchPage> {
             MovieProviderStatus.loading => Center(
               child: CircularProgressIndicator(),
             ),
-            MovieProviderStatus.error => MovieErrorView(
-              message: movieProvider.searchErrorMessage!,
-              onRetry: _retrySearch,
-            ),
+            MovieProviderStatus.error =>
+              _isOffline
+                  ? NoInternetView(
+                      onGoToWatchlist: () => context.go(AppRoutes.watchlist),
+                    )
+                  : MovieErrorView(
+                      message: movieProvider.searchErrorMessage!,
+                      onRetry: _retrySearch,
+                    ),
             MovieProviderStatus.success
                 when movieProvider.searchResults.isEmpty =>
               SearchEmptyState(),
@@ -97,15 +125,18 @@ class _SearchPageState extends State<SearchPage> {
                   );
                 }
                 final movie = movieProvider.searchResults[index];
-                return MovieListTile(
-                  movie: movie,
-                  isBookmarked: context
-                      .watch<WatchlaterProvider>()
-                      .isInWatchlater(movie.id),
-                  onBookmarkTap: () => context
-                      .read<WatchlaterProvider>()
-                      .toggleWatchlater(movie),
-                  onTap: () => context.push(AppRoutes.movieDetail(movie.id)),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: MovieListTile(
+                    movie: movie,
+                    isBookmarked: context
+                        .watch<WatchlaterProvider>()
+                        .isInWatchlater(movie.id),
+                    onBookmarkTap: () => context
+                        .read<WatchlaterProvider>()
+                        .toggleWatchlater(movie),
+                    onTap: () => context.push(AppRoutes.movieDetail(movie.id)),
+                  ),
                 );
               },
             ),

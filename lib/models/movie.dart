@@ -1,3 +1,5 @@
+import 'movie_detail.dart';
+
 class Movie {
   final int id;
   final String title;
@@ -22,13 +24,15 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       id: json['id'] as int,
-      title: json['title'] as String? ?? json['original_title'] as String? ?? '',
+      title:
+          json['title'] as String? ?? json['original_title'] as String? ?? '',
       posterPath: json['poster_path'] as String?,
       backdropPath: json['backdrop_path'] as String?,
       overview: json['overview'] as String? ?? '',
       voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,
       releaseDate: json['release_date'] as String? ?? '',
-      genreIds: (json['genre_ids'] as List<dynamic>?)
+      genreIds:
+          (json['genre_ids'] as List<dynamic>?)
               ?.map((e) => e as int)
               .toList() ??
           const [],
@@ -47,4 +51,19 @@ class Movie {
       'genre_ids': genreIds,
     };
   }
+
+  MovieDetail get asMovieDetail => MovieDetail(
+    id: id,
+    title: title,
+    posterPath: posterPath,
+    backdropPath: backdropPath,
+    overview: overview,
+    voteAverage: voteAverage,
+    voteCount: 0,
+    releaseDate: releaseDate,
+    runtime: 0,
+    budget: 0,
+    revenue: 0,
+    status: '',
+  );
 }

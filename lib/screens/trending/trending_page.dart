@@ -1,14 +1,17 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/watchlater_provider.dart';
 import '../../provider/movie_provider.dart';
+import '../../provider/watchlater_provider.dart';
 import '../../router/app_router.dart';
 import '../../services/movie_service.dart';
 import '../../theme/app_spacing.dart';
 import '../../widgets/movie_list_tile.dart';
-
+import '../../widgets/no_internet_view.dart';
 import 'movie_card.dart';
 import 'movie_error_view.dart';
 import 'movie_grid_skeleton.dart';
@@ -26,13 +29,36 @@ class TrendingPage extends StatefulWidget {
 class _TrendingPageState extends State<TrendingPage> {
   TrendingTimeWindow _timeWindow = TrendingTimeWindow.day;
   MovieViewMode _viewMode = MovieViewMode.list;
+  bool _isOffline = false;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
   @override
   void initState() {
     super.initState();
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      result,
+    ) {
+      setState(() => _isOffline = result.contains(ConnectivityResult.none));
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadMovies());
   }
 
+  @override
+  void dispose() {
+    _connectivitySubscription?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _refreshOfflineStatus() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (!mounted) return;
+    setState(() {
+      _isOffline = connectivityResult.contains(ConnectivityResult.none);
+    });
+  }
+
   void _loadMovies() {
+    _refreshOfflineStatus();
     context.read<MovieProvider>().loadMovies(
       () =>
           context.read<MovieService>().getTrendingMovies(_timeWindow.apiValue),
@@ -71,10 +97,14 @@ class _TrendingPageState extends State<TrendingPage> {
         Expanded(
           child: switch (movieProvider.moviesStatus) {
             MovieProviderStatus.loading => const MovieGridSkeleton(),
-            MovieProviderStatus.error => MovieErrorView(
-              message: movieProvider.errorMessage!,
-              onRetry: _loadMovies,
-            ),
+            MovieProviderStatus.error => _isOffline
+                ? NoInternetView(
+                    onGoToWatchlist: () => context.go(AppRoutes.watchlist),
+                  )
+                : MovieErrorView(
+                    message: movieProvider.errorMessage!,
+                    onRetry: _loadMovies,
+                  ),
             MovieProviderStatus.success =>
               _viewMode == MovieViewMode.grid
                   ? GridView.builder(

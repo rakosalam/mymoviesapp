@@ -77,8 +77,10 @@ class _WatchlistPageState extends State<WatchlistPage> {
                       onBookmarkTap: () => context
                           .read<WatchlaterProvider>()
                           .toggleWatchlater(movie),
-                      onTap: () =>
-                          context.push(AppRoutes.movieDetail(movie.id)),
+                      onTap: () => context.push(
+                        AppRoutes.movieDetail(movie.id),
+                        extra: true,
+                      ),
                     );
                   },
                 )
@@ -95,8 +97,10 @@ class _WatchlistPageState extends State<WatchlistPage> {
                       onBookmarkTap: () => context
                           .read<WatchlaterProvider>()
                           .toggleWatchlater(movie),
-                      onTap: () =>
-                          context.push(AppRoutes.movieDetail(movie.id)),
+                      onTap: () => context.push(
+                        AppRoutes.movieDetail(movie.id),
+                        extra: true,
+                      ),
                     );
                   },
                 ),

@@ -54,7 +54,10 @@ final GoRouter appRouter = GoRouter(
       path: '/movie/:id',
       builder: (context, state) {
         final movieId = int.parse(state.pathParameters['id']!);
-        return MovieDetailPage(movieId: movieId);
+        return MovieDetailPage(
+          movieId: movieId,
+          hideExtras: state.extra as bool? ?? false,
+        );
       },
     ),
   ],

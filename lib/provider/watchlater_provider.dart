@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import '../consts/api_constants.dart';
 
 import '../models/movie.dart';
 
@@ -22,6 +24,7 @@ class WatchlaterProvider extends ChangeNotifier {
       _watchlaterMovies.removeWhere((m) => m.id == movie.id);
     } else {
       _watchlaterMovies.add(movie);
+      _prefetchImages(movie);
     }
     notifyListeners();
     await _save();
@@ -33,6 +36,26 @@ class WatchlaterProvider extends ChangeNotifier {
       _prefsKey,
       jsonEncode(_watchlaterMovies.map((m) => m.toJson()).toList()),
     );
+  }
+
+  void _prefetchImages(Movie movie) {
+    final urls = <String>[
+      if (movie.posterPath != null)
+        ApiConstants.imageUrl(
+          movie.posterPath!,
+          size: ApiConstants.posterSizeSmall,
+        ),
+      if (movie.posterPath != null) ApiConstants.imageUrl(movie.posterPath!),
+      if (movie.backdropPath != null)
+        ApiConstants.imageUrl(
+          movie.backdropPath!,
+          size: ApiConstants.posterSizeLarge,
+        ),
+    ];
+
+    for (final url in urls) {
+      DefaultCacheManager().downloadFile(url).then((_) {}).catchError((_) {});
+    }
   }
 
   Future<void> _loadWatchlist() async {

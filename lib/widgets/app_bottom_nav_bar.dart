@@ -13,7 +13,10 @@ class AppBottomNavItem {
 
 /// CineTrack bottom navigation bar: the active item shows as an amber pill
 /// with icon + label side by side; inactive items show icon above label,
-/// muted. No routing wired up yet — [onTap] just reports the tapped index.
+/// muted. [onTap] reports the tapped index; the caller is responsible for
+/// routing (see [AppRoutes]/`app_router.dart`). [initialIndex] also syncs
+/// the highlighted item when navigation happens externally, e.g. via
+/// `context.go(...)` from elsewhere in the app rather than a tap here.
 class AppBottomNavBar extends StatefulWidget {
   const AppBottomNavBar({
     super.key,
@@ -36,6 +39,14 @@ class AppBottomNavBar extends StatefulWidget {
 
 class _AppBottomNavBarState extends State<AppBottomNavBar> {
   late int _selectedIndex = widget.initialIndex;
+
+  @override
+  void didUpdateWidget(covariant AppBottomNavBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialIndex != oldWidget.initialIndex) {
+      _selectedIndex = widget.initialIndex;
+    }
+  }
 
   void _select(int index) {
     setState(() => _selectedIndex = index);
