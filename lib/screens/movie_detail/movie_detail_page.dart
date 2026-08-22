@@ -139,11 +139,7 @@ class _MovieDetailContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MovieDetailHero(
-            movie: movie,
-            onBackTap: () => context.pop(),
-            onShareTap: () {},
-          ),
+          MovieDetailHero(movie: movie, onBackTap: () => context.pop()),
           const SizedBox(height: AppSpacing.lg),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
